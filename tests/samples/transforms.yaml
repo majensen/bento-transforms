@@ -18,7 +18,9 @@ TransformDefinitions:
       Model: CDS
       Version: 10.0.0
       Node: null
-    Package: bento-transforms@0.1.0
+    Package:
+      Name: bento-transforms
+      Version: 0.1.0
 
 # Identities: copy values verbatim from source property to dest property
 # full spec: From/To, with Model/Version/Node/Property
@@ -88,11 +90,11 @@ TransformDefinitions:
       Steps:
         - string.split
     age_days_to_years:
-      Input:
+      Inputs:
         - Node: diagnosis
           Props:
             - age_at_diagnosis
-      Output:
+      Outputs:
         - Node: diagnosis
           Props:
             - age_at_diagnosis
@@ -101,10 +103,16 @@ TransformDefinitions:
         -
           Package: bento-transforms@0.1.1
           Entrypoint: arith.days_to_years
+        -
+          Package:
+            Name: bento-mutations
+            Version: 2.0.0
+          Entrypoint: mutate.update
+        
     acl_to_authz:
-      Input:
+      Inputs:
         - general_file.acl
-      Output:
+      Outputs:
         - study.authz
       Params:
         format_string: ""

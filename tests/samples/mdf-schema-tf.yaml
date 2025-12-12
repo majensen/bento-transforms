@@ -546,65 +546,69 @@ defs:
         type: array
         minItems: 1
         items:
-          type: object
-          required:
-            - Props
-          properties:
-            Model:
-              $ref: "#/defs/snake_case_id"
-            Version:
-              $ref: "#/defs/snake_case_id"
-            Node:
-              $ref: "#/defs/snake_case_id"
-            Props:
-              description: |
-                Depending on whether the first Step requires a list or a dict/pymodel,
-                The Inputs Props: entry for transformation should be either an array of
-                property handles (within the Node: specified), in the order they
-                should be provided to the input transform Step, or an object (dict)
-                with keys specifying the transform input and values specifying the
-                property handle.
-              oneOf:
-                - type: array
-                  items:
-                    $ref: "#/defs/snake_case_id"
-                - type: object
-                  propertyNames:
-                    $ref: "#/defs/snake_case_id"
-                  additionalProperties:
-                    $ref: "#/defs/snake_case_id"
+          oneOf:
+          - $ref: "#/defs/snake_case_id"
+          - type: object
+            required:
+              - Props
+            properties:
+              Model:
+                $ref: "#/defs/snake_case_id"
+              Version:
+                $ref: "#/defs/snake_case_id"
+              Node:
+                $ref: "#/defs/snake_case_id"
+              Props:
+                description: |
+                  Depending on whether the first Step requires a list or a dict/pymodel,
+                  The Inputs Props: entry for transformation should be either an array of
+                  property handles (within the Node: specified), in the order they
+                  should be provided to the input transform Step, or an object (dict)
+                  with keys specifying the transform input and values specifying the
+                  property handle.
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: "#/defs/snake_case_id"
+                  - type: object
+                    propertyNames:
+                      $ref: "#/defs/snake_case_id"
+                    additionalProperties:
+                      $ref: "#/defs/snake_case_id"
       Outputs:
         type: array
         minItems: 1
         items:
-          type: object
-          required:
-            - Props
-          properties:
-            Model:
-              $ref: "#/defs/snake_case_id"
-            Version:
-              $ref: "#/defs/snake_case_id"
-            Node:
-              $ref: "#/defs/snake_case_id"
-            Props:
-              description: |
-                Depending on whether the final Step outputs a list
-                or a dict/pymodel, the Output Props: entry for transformation
-                should be either an array
-                of property handles (within the Node: specified), in the order they
-                should map from the final transform Step output, or an object (dict)
-                with keys specifying the transform output and values specifying the
-                property handle. 
-              oneOf:
-                - type: array
-                  items:
-                    $ref: "#/defs/snake_case_id"
-                - type: object
-                  propertyNames:
-                    $ref: "#/defs/snake_case_id"
-                  additionalProperties:
-                    $ref: "#/defs/snake_case_id"
+          oneOf:
+          - $ref: "#/defs/snake_case_id"
+          - type: object
+            required:
+              - Props
+            properties:
+              Model:
+                $ref: "#/defs/snake_case_id"
+              Version:
+                $ref: "#/defs/snake_case_id"
+              Node:
+                $ref: "#/defs/snake_case_id"
+              Props:
+                description: |
+                  Depending on whether the final Step outputs a list
+                  or a dict/pymodel, the Output Props: entry for transformation
+                  should be either an array
+                  of property handles (within the Node: specified), in the order they
+                  should map from the final transform Step output, or an object (dict)
+                  with keys specifying the transform output and values specifying the
+                  property handle. 
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: "#/defs/snake_case_id"
+                  - type: object
+                    propertyNames:
+                      $ref: "#/defs/snake_case_id"
+                    additionalProperties:
+                      $ref: "#/defs/snake_case_id"
       Params:
         $ref: "#/defs/paramSpec"
       Steps:
@@ -623,9 +627,18 @@ defs:
         items:
           anyOf:
             - type: object
+              required:
+                - Entrypoint
               properties:
                 Package:
-                  type: string
+                  oneOf:
+                    - type: string
+                    - type: object
+                      properties:
+                        Name:
+                          type: string
+                        Version:
+                          type: string
                 Entrypoint:
                   $ref: "#/defs/snake_case_id"
                 Params:
@@ -673,6 +686,12 @@ defs:
               oneOf:
                 - type: string
                 - $ref: "#/defs/url"
+                - type: object
+                  properties:
+                    Name:
+                      type: string
+                    Version:
+                      type: string
               
       Identities:
         description: |

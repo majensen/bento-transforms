@@ -17,6 +17,5 @@ def test_reader():
                            handle='transforms',
                            mdf_schema=test_mdfschema_file)
     assert tmdf
-    set_trace()
     assert tmdf.mdf['TransformDefinitions']
     assert tmdf.mdf_schema['$id']
