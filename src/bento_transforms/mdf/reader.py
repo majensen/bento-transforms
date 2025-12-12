@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 import re
 from .pymodels import (
-    Defaults, EntityDefaults, Package,
+    Defaults, EntityDefaults, PackageC,
     NPIdentitySpec, IOSpec, TfStepSpec,
     IdentitySpec, IdentityTransform,
     FromToList, GeneralTransform,
@@ -38,7 +38,6 @@ class TransformReader(MDFReader):
         self._defaults = None
         self._package_default = None
         self._raise_error = raise_error
-        self.parse_transforms_success = False
         if self.files:
             super().load_yaml()
         self.parse_mdf()
@@ -66,19 +65,22 @@ class TransformReader(MDFReader):
 
     def convert_dict_to_IOSpec(self, spec: dict | List[dict],
                                defaults: EntityDefaults) -> List[IOSpec]:
+        def set_defaults_or_die(spec, attr):
+            if spec.get(attr) is None:
+                if defaults is None or defaults.__getattribute__(attr) is None:
+                    raise RuntimeError(f"{attr} not specified and no default set (processing {spec})")
+                spec[attr] = defaults.__getattribute__(attr)
+            return
+        
         if isinstance(spec, dict):
             spec = [spec]
         ret = []
         for s in spec:
-            if s.get("Model") is None:
-                s["Model"] = defaults.Model
-            if s.get("Version") is None:
-                s["Version"] = defaults.Version
-            if s.get("Node") is None:
-                s["Node"] = defaults.Node
+            for attr in ["Model", "Version", "Node"]:
+                set_defaults_or_die(s, attr)
+
             if s.get("Prop") is not None:
                 s["Props"] = [s["Prop"]]
-
             if s.get("Props") is None:
                 raise RuntimeError(f"Props value is required (processing {spec})")
             if isinstance(s["Props"], str):
@@ -108,7 +110,7 @@ class TransformReader(MDFReader):
                               Props=[prop]))
         return ret
 
-    def convert_dict_to_TfStepSpec(self, spec: dict, defaults: Package | None) -> TfStepSpec:
+    def convert_dict_to_TfStepSpec(self, spec: dict, defaults: PackageC | None) -> TfStepSpec:
         if spec.get("Package") is None:
             if defaults in None:
                 raise RuntimeError(f"Package is not defined, with no default (processing {spec}")
@@ -116,17 +118,16 @@ class TransformReader(MDFReader):
         elif isinstance(spec["Package"], str):
             (name, version) = re.match("^([^@]+)([@].*)",
                                        spec["Package"]).groups()
-            spec["Package"] = Package(Name=name, Version=version)
+            spec["Package"] = PackageC(Name=name, Version=version)
         return TfStepSpec(**spec)
 
     def convert_string_to_TfStepSpec(self, spec: str,
-                                     defaults: Package | None) -> TfStepSpec:
+                                     defaults: PackageC | None) -> TfStepSpec:
         if defaults is None:
             raise RuntimeError(f"Simple step entrypoint format also requires setting the default package in Defaults (processing {spec})")
         return TfStepSpec(Package=defaults, Entrypoint=spec)
 
     def parse_mdf(self) -> None:
-        self.parse_mdf_success = True
         if not self.mdf or not self.mdf.get("TransformDefinitions"):
             self.parse_mdf_success = False
             raise RuntimeError("No transforms MDF loaded")
@@ -137,9 +138,9 @@ class TransformReader(MDFReader):
                 s = tfdefns["Defaults"]["Package"]
                 if isinstance(s, str):
                     (name, version) = re.match("^([^@]+)([@].*)", s).groups()
-                    tfdefns["Defaults"]["Package"] = Package(Name=name, Version=version[1:])
+                    tfdefns["Defaults"]["Package"] = PackageC(Name=name, Version=version[1:])
                 elif isinstance(s, dict):
-                    tfdefns["Defaults"]["Package"] = Package(**s)
+                    tfdefns["Defaults"]["Package"] = PackageC(**s)
                 else:
                     raise RuntimeError(f"Cannot interpret package specification (processing {s})")
             self._defaults = Defaults(**tfdefns["Defaults"])

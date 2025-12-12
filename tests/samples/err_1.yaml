@@ -1,0 +1,16 @@
+Nodes: null
+Relationships: null
+TransformDefinitions:
+  Defaults:
+    Package:
+      Name: bento-transforms
+      Version: 0.1.0
+  Identities:
+    - From:
+        Model: CCDI
+        Node: study
+        Prop: study_acronym
+      To:
+        Model: GC
+        Node: study
+        Prop: acl

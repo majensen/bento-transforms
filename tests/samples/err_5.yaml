@@ -1,0 +1,41 @@
+Nodes: null
+Relationships: null
+TransformDefinitions:
+  Defaults:
+    Inputs:
+      Model: CCDI
+      Version: 3.0.1
+      Node: frelb
+    Outputs:
+      Model: GC
+      Version: 10.0.0
+  Transforms:
+    age_days_to_years:
+      Inputs:
+        - Props:
+            - age_at_diagnosis
+      Outputs:
+        - Node: diagnosis
+          Props:
+            - age_at_diagnosis
+      Params: null # means, use default params
+      Steps:
+        -
+          Package: bento-transforms@0.1.1
+          Entrypoint: arith.days_to_years
+        -
+          Package:
+            Name: bento-mutations
+            Version: 2.0.0
+          Entrypoint: mutate.update
+        
+    acl_to_authz:
+      Inputs:
+        - general_file.acl
+      Outputs:
+        - study.authz
+      Params:
+        format_string: ""
+      Steps:
+        - string.format
+

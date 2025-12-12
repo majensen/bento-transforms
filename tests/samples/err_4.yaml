@@ -1,0 +1,18 @@
+Nodes: null
+Relationships: null
+TransformDefinitions:
+  Defaults:
+    Inputs:
+      Model: CCDI
+      Version: 3.0.1
+      Node: frelb
+    Outputs:
+      Model: GC
+      Version: 10.0.0
+    Package:
+      Name: bento-transforms
+      Version: 0.1.0
+  Identities:
+    -
+      - hey.dude
+      - sup
