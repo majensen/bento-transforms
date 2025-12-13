@@ -20,7 +20,10 @@ from copy import deepcopy
 from bento_meta.objects import Node, Edge, Property, Tag, Term
 from bento_meta.tf_objects import Transform, TfStep
 from bento_mdf import MDFReader
-from bento_mdf.mdf.convert import spec_to_entity
+# from bento_mdf.mdf.convert import spec_to_entity
+
+def gtf_to_meta_graph(gtf: GeneralTransform):
+  pass  
 
 class TransformReader(MDFReader):
     """MDF class for reading the MDF-Transform format into bento-meta objects"""

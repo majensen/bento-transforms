@@ -102,6 +102,9 @@ TransformDefinitions:
       Steps:
         -
           Package: bento-transforms@0.1.1
+          Params:
+            divisor: 365
+            frelb: boog
           Entrypoint: arith.days_to_years
         -
           Package:

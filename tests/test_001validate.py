@@ -28,6 +28,9 @@ def test_reader():
     assert len(tmdf.transforms) == 14
     for t in tmdf._transforms.values():
         assert isinstance(t, GeneralTransform)
+    tf = tmdf.transforms['age_days_to_years']
+    assert tf.Steps[0].Params["divisor"] == 365
+    assert tf.Steps[1].Params is None
 
 
 def test_err_missing_default_in_From():

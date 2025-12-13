@@ -50,6 +50,7 @@ class IdentitySpec(BaseModel):
 
 class TfStepSpec(BaseModel):
     Package: PackageC
+    Params: list | dict | None = None
     Entrypoint: str
     
 
