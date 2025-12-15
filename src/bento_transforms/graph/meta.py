@@ -23,7 +23,7 @@ def gtf_to_tf_graph(gtf: GeneralTransform, handle: str) -> Transform:
             nodes[nidx] = Node({"handle": inp.Node,
                                 "model": inp.Model,
                                 "version": inp.Version})
-        for p in input.Props:
+        for p in inp.Props:
             pidx = (inp.Model, inp.Version, p)
             if props.get(pidx) is None:
                 props[pidx] = Property({"handle": p,
@@ -53,7 +53,7 @@ def gtf_to_tf_graph(gtf: GeneralTransform, handle: str) -> Transform:
                        "version": s.Package.Version,
                        "entrypoint": s.Entrypoint})
         if s.Params is not None:
-            step.params_json = json.dumps(step.Params)
+            step.params_json = json.dumps(step.params)
         if first_step:
             tf.first_step = step
             first_step = False

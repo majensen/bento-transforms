@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 from bento_mdf.validator import MDFValidator
 from bento_transforms.mdf import TransformReader
 from bento_transforms.mdf.pymodels import GeneralTransform
