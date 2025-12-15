@@ -57,7 +57,6 @@ class TfStepSpec(BaseModel):
 class GeneralTransform(BaseModel):
     Inputs: List[IOSpec]
     Outputs: List[IOSpec]
-    Params: dict | list | None = None
     Steps: List[TfStepSpec]
 
 

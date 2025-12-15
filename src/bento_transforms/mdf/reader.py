@@ -2,7 +2,7 @@
 bento_transforms.mdf.reader
 
 Validate and Load MDF-flavored transformation YAML files to a dict
-of standardized Pydantic GeneralTransform instances.
+of standardized Pydantic GeneralTransform instances
 """
 from __future__ import annotations
 
@@ -10,20 +10,14 @@ import logging
 import re
 from .pymodels import (
     Defaults, EntityDefaults, PackageC,
-    NPIdentitySpec, IOSpec, TfStepSpec,
+    IOSpec, TfStepSpec,
     IdentitySpec, IdentityTransform,
     FromToList, GeneralTransform,
 )
 from typing import List
 from pathlib import Path
-from copy import deepcopy
-from bento_meta.objects import Node, Edge, Property, Tag, Term
-from bento_meta.tf_objects import Transform, TfStep
 from bento_mdf import MDFReader
-# from bento_mdf.mdf.convert import spec_to_entity
 
-def gtf_to_meta_graph(gtf: GeneralTransform):
-  pass  
 
 class TransformReader(MDFReader):
     """MDF class for reading the MDF-Transform format into bento-meta objects"""
@@ -210,10 +204,10 @@ class TransformReader(MDFReader):
                     steps.append(self.convert_string_to_TfStepSpec(s, self._defaults.Package))
                 else:
                     raise RuntimeError(f"Cannot interpret step specification ({s})")
-            params = spec.get("Params")
             self._transforms[hdl] = GeneralTransform(
                 Inputs=inputs,
                 Outputs=outputs,
-                Params=params,
                 Steps=steps
             )
+
+
