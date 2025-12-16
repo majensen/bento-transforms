@@ -53,7 +53,7 @@ def gtf_to_tf_graph(gtf: GeneralTransform, handle: str) -> Transform:
                        "version": s.Package.Version,
                        "entrypoint": s.Entrypoint})
         if s.Params is not None:
-            step.params_json = json.dumps(step.params)
+            step.params_json = json.dumps(s.Params)
         if first_step:
             tf.first_step = step
             first_step = False

@@ -85,10 +85,11 @@ TransformDefinitions:
             - first_name
             - middle_name
             - last_name
-      Params:
-        delimiter: " "
       Steps:
-        - string.split
+        - Entrypoint: string.split
+          Package: bento-transforms@0.1.1
+          Params:
+            delimiter: " "
     age_days_to_years:
       Inputs:
         - Node: diagnosis
