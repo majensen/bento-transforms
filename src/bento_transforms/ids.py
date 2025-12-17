@@ -5,7 +5,7 @@ import uuid
 
 
 def generate_uuid(input: str | List[str],
-                  params: UuidNS):
+                  params: dict):
     """
     Args:
         values: list/tuple of values to seed UUID
@@ -13,6 +13,7 @@ def generate_uuid(input: str | List[str],
     Returns:
         UUID string
     """
+    params = UuidNS(params)
     if not isinstance(input, (list, tuple)):
         input = [input]
 

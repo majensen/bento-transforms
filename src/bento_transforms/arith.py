@@ -6,7 +6,7 @@ from .pymodels import (
 
 
 def days_to_years(input: int | float | None,
-                  params: D2YParams) -> int | None:
+                  params: dict) -> int | None:
     """
     Args:
         input: numeric value in days
@@ -16,13 +16,14 @@ def days_to_years(input: int | float | None,
     Returns:
         Converted value or None if sentinel detected
     """
+    params = D2YParams(params)
     if input == params.sentinel or input is None:
         return None
     return round(input / params.divisor, params.precision)
 
 
 def years_to_days(input: int | float | None,
-                  params: Y2DParams) -> int:
+                  params: dict) -> int:
     """
     Args:
         input: numeric value in years
@@ -31,6 +32,7 @@ def years_to_days(input: int | float | None,
     Returns:
         Converted value in days, or sentinel if input None
     """
+    params = Y2DParams(params)
     if input is None:
         return params.sentinel_if_null
     return round(input * params.multiplier)

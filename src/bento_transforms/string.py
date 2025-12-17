@@ -79,15 +79,14 @@ def normalize_case(value, case_type="sentence",
     return value_str
 
 
-def split(input: str, params: StrFuncParams) -> list:
+def split(input: str, params: dict) -> list:
+    params = StrFuncParams(**params) # for type checking
     return input.split(sep=params.delimiter)
 
 
 def add_prefix(input: str, params: StrFuncParams) -> str:
     return params.prefix + input
 
-
-def render_template(input: List(str), params: StrFuncParams) -> str:
 
 def concat_fields(values, delimiter="_", prefix="", suffix="", 
                   skip_null=True):

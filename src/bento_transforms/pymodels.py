@@ -25,14 +25,13 @@ class Y2DParams(BaseModel):
 class UuidNS(BaseModel):
     namespace: UuidNSEnum = UuidNSEnum.DNS
 
-
 class StrFuncParams(BaseModel):
-    prefix: str = None
-    suffix: str = None
+    prefix: str | None = None
+    suffix: str | None  = None
     delimiter: str = " "
     position: int = 1
-    pattern: Pattern
-    replacement: str
+    pattern: Pattern | None = None
+    replacement: str | None = None
     flags: int = 0
     default: str | None = None
     

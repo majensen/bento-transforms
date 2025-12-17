@@ -62,7 +62,7 @@ class GeneralTransform(BaseModel):
 
 class IdentityTransform(GeneralTransform):
     Steps: List[TfStepSpec] = Field(
-        default_factory=lambda: [TfStepSpec(Package={"Name":"identity"},
+        default_factory=lambda: [TfStepSpec(Package={"Name":"Identity"},
                                             Entrypoint="identity")]
         )
     

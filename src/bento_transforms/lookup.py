@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing
 
-def race_ccdi_to_cds(value, default="Unknown"):
+def race_ccdi_to_cds(inp: str, params:dict | str = "NA"):
     """
     Args:
         value: CCDI race value
@@ -9,6 +9,10 @@ def race_ccdi_to_cds(value, default="Unknown"):
     Returns:
         CDS-compliant race value
     """
+    if isinstance(params, dict):
+        default = params['default']
+    else:
+        default = params
     mapping = {
         "African American": "Black or African American",
         "European": "White",
@@ -19,7 +23,8 @@ def race_ccdi_to_cds(value, default="Unknown"):
         "Unknown": "Unknown",
         "Not Reported": "Unknown"
     }
-    return mapping.get(value, default)
+    return mapping.get(inp, default)
+
 
 def race_cds_to_ccdi(value, default="Unknown"):
     """Reverse mapping; note some CDS values map to 'Other' in CCDI"""

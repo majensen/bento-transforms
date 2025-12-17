@@ -1,6 +1,6 @@
 import pytest
 from bento_transforms.mdf import TransformReader
-from bento_transforms.graph.meta import gtf_to_tf_graph
+from bento_transforms.graph.meta import TransformModel
 from bento_meta.objects import Node, Property
 from bento_meta.tf_objects import Transform, TfStep
 
@@ -10,11 +10,10 @@ def test_meta_graph(samplesd):
                            handle='transforms',
                            mdf_schema=samplesd / "mdf-schema-tf.yaml")
     
-    for (hdl, tf) in tmdf.transforms.items():
-        meta_tfs[hdl] = gtf_to_tf_graph(tf, hdl)
-        assert meta_tfs[hdl]
-
-    mtf = meta_tfs["fullname_to_fmlnames"]
+    tmdl = TransformModel(tmdf.transforms)
+    assert tmdl
+    
+    mtf = tmdl.transforms["fullname_to_fmlnames"]
 
     assert isinstance(mtf, Transform)
     assert len(mtf.input_props) == 1
@@ -24,6 +23,6 @@ def test_meta_graph(samplesd):
 
     mstep = mtf.first_step
     assert mstep.entrypoint == "string.split"
-    assert mstep.package == "bento-transforms"
+    assert mstep.package == "bento_transforms"
     assert mstep.version == "0.1.1"
     assert mstep.params['delimiter'] == " "

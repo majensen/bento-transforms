@@ -119,10 +119,12 @@ class TransformReader(MDFReader):
             if defaults in None:
                 raise RuntimeError(f"Package is not defined, with no default (processing {spec}")
             spec["Package"] = defaults.Package
+            spec["Package"]["Name"] = spec["Package"]["Name"].replace("-","_")
+            
         elif isinstance(spec["Package"], str):
             (name, version) = re.match("^([^@]+)([@].*)",
                                        spec["Package"]).groups()
-            spec["Package"] = PackageC(Name=name, Version=version[1:])
+            spec["Package"] = PackageC(Name=name.replace("-","_"), Version=version[1:])
         return TfStepSpec(**spec)
 
     def convert_string_to_TfStepSpec(self, spec: str,

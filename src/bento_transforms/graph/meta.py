@@ -13,6 +13,17 @@ from bento_meta.objects import Node, Property
 from bento_meta.tf_objects import Transform, TfStep
 
 
+class TransformModel:
+    def __init__(self, gtfs=dict[GeneralTransform]):
+        self._transforms = {}
+        for (hdl, tf) in gtfs.items():
+            self._transforms[hdl] = gtf_to_tf_graph(tf, hdl)
+
+    @property
+    def transforms(self):
+        return self._transforms
+
+                 
 def gtf_to_tf_graph(gtf: GeneralTransform, handle: str) -> Transform:
     tf = Transform({"handle": handle})
     nodes = {}
@@ -62,5 +73,3 @@ def gtf_to_tf_graph(gtf: GeneralTransform, handle: str) -> Transform:
             prev_step = step
     tf.last_step = step
     return tf
-
-
