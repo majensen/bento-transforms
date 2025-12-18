@@ -1,7 +1,7 @@
 import pytest
 from bento_transforms.mdf import TransformReader
 from bento_transforms.graph.meta import TransformModel
-from bento_meta.objects import Node, Property
+from bento_meta.objects import Node, Property, Tag
 from bento_meta.tf_objects import Transform, TfStep
 
 def test_meta_graph(samplesd):
@@ -26,3 +26,8 @@ def test_meta_graph(samplesd):
     assert mstep.package == "bento_transforms"
     assert mstep.version == "0.1.1"
     assert mstep.params['delimiter'] == " "
+
+    # Transform can haz Tags
+    tag = Tag({"key": "Source", "value":"SB2"})
+    mtf.tags[tag.key] = tag
+    
