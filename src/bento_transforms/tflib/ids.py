@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import List
-from pymodels import UuidNS, UuidNSEnum
+from .pymodels import UuidNS, UuidNSEnum
 import uuid
 
 
